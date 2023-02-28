@@ -3,15 +3,12 @@
 `lsp_lines` is a simple neovim plugin that renders diagnostics using virtual
 lines on top of the real line of code.
 
-![A screenshot of the plugin in action](screenshot.png)
+![A screenshot of the plugin in action](https://user-images.githubusercontent.com/45848083/221947803-765a26d0-8cc3-437a-8605-b4ef157c020f.png)
 
-Font is [Fira Code][font], a classic.
-Theme is [tokyonight.nvim][theme].
+Font is [Fira Code](https://github.com/tonsky/FiraCode), a classic\
+Theme is [tokyonight.nvim](https://github.com/folke/tokyonight.nvim)
 
-[font]: https://github.com/tonsky/FiraCode
-[theme]: https://github.com/folke/tokyonight.nvim
-
-# Background
+## Background
 
 LSPs provide lots of useful diagnostics for code (typically: errors, warnings,
 linting). By default they're displayed using virtual text at the end of the
@@ -21,82 +18,76 @@ per line, but again, there's no handy way to read the whole thing.
 
 `lsp_lines` solves this issue.
 
-# Installation
+## Installation
 
-## With packer.nvim
-
-Using packer.nvim (this should probably be registered _after_ `lspconfig`):
+### With packer.nvim
 
 ```lua
-use({
-  "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-  config = function()
-    require("lsp_lines").setup()
-  end,
-})
+use "edr3x/lsp_lines.nvim"
 ```
 
-## With git
-
-You can algo just clone the repo into neovim's plug-in directory:
-
-    mkdir -p $HOME/.local/share/nvim/site/pack/plugins/start/
-    cd $HOME/.local/share/nvim/site/pack/plugins/start/
-    git clone git@git.sr.ht:~whynothugo/lsp_lines.nvim
-
-And then in `init.lua`:
-
-    require("lsp_lines").setup()
-
-# Setup
-
-It's recommended to also remove the regular virtual text diagnostics to avoid
-pointless duplication:
+And then in `init.lua`
 
 ```lua
--- Disable virtual_text since it's redundant due to lsp_lines.
-vim.diagnostic.config({
-  virtual_text = false,
-})
+require("lsp_lines").setup()
 ```
 
-# Usage
-
-This plugin's functionality can be disabled with:
+### With Lazy.nvim
 
 ```lua
-vim.diagnostic.config({ virtual_lines = false })
+{ "edr3x/lsp_lines.nvim", opts = {} }
 ```
+___
 
-And it can be re-enabled via:
+> Note:\
+> It is recommended to also remove the regular virtual text diagnostics to avoid pointless duplication:
+> ```lua
+> vim.diagnostic.config({ virtual_text = false })
+> ```
 
-```lua
-vim.diagnostic.config({ virtual_lines = true })
-```
+## Usage
 
-A helper is also provided to toggle, which is convenient for mappings:
+You can set keymap to toggle
 
 ```lua
 vim.keymap.set(
-  "",
-  "<Leader>l",
+  {"n", "x"},
+  "<leader>l",
   require("lsp_lines").toggle,
   { desc = "Toggle lsp_lines" }
 )
 ```
 
-# Contributing
+If you are using lazy.nvim you can simply do:
+
+```lua
+{
+    "edr3x/lsp_lines.nvim",
+    keys = {
+        {
+            "<leader>l",
+            function()
+                require("lsp_lines").toggle()
+            end,
+            desc = "Toggle lsp_lines"
+        }
+    },
+    opts = {}
+}
+```
+
+## Contributing
 
 - Discussion or patches: ~whynothugo/lsp_lines.nvim@lists.sr.ht
 - Bugs / Issues: https://todo.sr.ht/~whynothugo/lsp_lines.nvim
 - Tips: https://ko-fi.com/whynothugo
 
-# Development
+## Development
 
 It would be nice to show connecting lines when there's relationship between
 diagnostics (as is the case with `rust_analyzer`). Oh perhaps surface them via
 hover().
 
-# Licence
+## Licence
 
 This project is licensed under the ISC licence. See LICENCE for more details.
